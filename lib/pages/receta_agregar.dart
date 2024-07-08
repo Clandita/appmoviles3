@@ -111,7 +111,8 @@ class _RecetaAgregarPageState extends State<RecetaAgregarPage> {
                       int.parse(porcionesCtrl.text.trim()),
                       instruccionesCtrl.text.trim(),
                       this.categoria,
-                      this.fecha_creacion,);
+                      this.fecha_creacion,
+                      'https://cdn-icons-png.flaticon.com/512/2088/2088090.png');
                     
                     Navigator.pop(context);
                   }
