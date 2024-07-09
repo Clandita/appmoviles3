@@ -1,9 +1,7 @@
 import 'package:appmoviles3/pages/receta_agregar.dart';
 import 'package:appmoviles3/services/firestore_service.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 class RecetasPage extends StatefulWidget {
   final String categoria;
   const RecetasPage({required this.categoria});
@@ -17,9 +15,9 @@ class _RecetasPageState extends State<RecetasPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.pink,
+        backgroundColor: Color(0xfffbd2cc),
         centerTitle: true,
-        title: Text("Recetas de ${widget.categoria}",style:TextStyle(color: Colors.white)),
+        title: Text("Recetas de ${widget.categoria}"),
       ),
       body: Center(
           child:StreamBuilder(stream:FirestoreService().recetasPorCategoria( categoria: widget.categoria) ,
@@ -101,8 +99,8 @@ class _RecetasPageState extends State<RecetasPage> {
           height: 350,
           child: Container(
             decoration: BoxDecoration(
-              color: Color.fromARGB(255, 243, 184, 204),
-              border: Border.all(color:Colors.pink, width: 2),
+              color: Color(0xfffbd2cc),
+              border: Border.all(color:Color(0xffde817c), width: 2),
               borderRadius: BorderRadius.only(
                 topLeft: Radius.circular(10),
                 topRight: Radius.circular(10)
