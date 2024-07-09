@@ -2,15 +2,20 @@ import 'package:appmoviles3/pages/receta_agregar.dart';
 import 'package:appmoviles3/services/firestore_service.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 class RecetasPage extends StatefulWidget {
   final String categoria;
+  
   const RecetasPage({required this.categoria});
 
   @override
+  
   State<RecetasPage> createState() => _RecetasPageState();
+  
 }
 
 class _RecetasPageState extends State<RecetasPage> {
+  final formatofecha=DateFormat('dd-MM-yyy');
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -57,14 +62,6 @@ class _RecetasPageState extends State<RecetasPage> {
                           
                         ],
                       ),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Text('Fecha:'),
-                          
-                        ],
-                      ),
-                      
                       Container(
                         padding: EdgeInsets.all(10),
                         child: ElevatedButton(

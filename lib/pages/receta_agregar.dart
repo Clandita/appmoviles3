@@ -1,5 +1,6 @@
 import 'package:appmoviles3/services/firestore_service.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 class RecetaAgregarPage extends StatefulWidget {
   const RecetaAgregarPage({super.key});
 
@@ -16,6 +17,7 @@ class _RecetaAgregarPageState extends State<RecetaAgregarPage> {
 
   final formKey=GlobalKey<FormState>();
   DateTime fecha_creacion=DateTime.now();
+  final formatofecha=DateFormat('dd-MM-yyy');
   String categoria='';
   String? categoriaseleccionada;
 
@@ -82,7 +84,9 @@ class _RecetaAgregarPageState extends State<RecetaAgregarPage> {
                     return Text("cargando categorias...");
                   }else{
                     var categoria=snapshot.data!.docs;
-                    categoriaseleccionada=categoria[0]['nombre'];
+                    if (categoriaseleccionada == null && categoria.isNotEmpty) {
+                        categoriaseleccionada = categoria[0]['nombre']; // Asigna la primera categoría si no hay ninguna seleccionada
+                      }
                     return DropdownButtonFormField<String>(
                       value: categoriaseleccionada,
                       decoration: InputDecoration(labelText: 'Categoria'),
@@ -91,8 +95,9 @@ class _RecetaAgregarPageState extends State<RecetaAgregarPage> {
                           child: Text(categoria['nombre']),
                           value: categoria['nombre'],);
                       }).toList(),
-                      onChanged: (categoriaseleccionada){
+                      onChanged: (String? newValue){
                         setState(() {
+                          categoriaseleccionada=newValue;
                           this.categoria=categoriaseleccionada!;
                         });
                       },
@@ -123,7 +128,7 @@ class _RecetaAgregarPageState extends State<RecetaAgregarPage> {
                 child: Row(
                   children: [
                     Text("fecha de creación: ",style: TextStyle(fontWeight: FontWeight.bold),),
-                    Text(fecha_creacion.day.toString()+'/'+fecha_creacion.month.toString()+'/'+fecha_creacion.year.toString()),
+                    Text(formatofecha.format(fecha_creacion)),
                     Spacer(),
                   
                   ],),
