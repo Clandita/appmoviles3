@@ -30,4 +30,8 @@ class FirestoreService{
   Stream<QuerySnapshot>recetasPorCategoria({required String categoria}){
     return FirebaseFirestore.instance.collection('recetas').where('categoria', isEqualTo: categoria).snapshots();
   }
+
+  Future<void>recetaBorrar(String docId) async {
+    await FirebaseFirestore.instance.collection('recetas').doc(docId).delete();
+  }
 }

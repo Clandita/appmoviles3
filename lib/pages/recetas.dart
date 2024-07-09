@@ -1,7 +1,9 @@
 import 'package:appmoviles3/pages/receta_agregar.dart';
 import 'package:appmoviles3/services/firestore_service.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 class RecetasPage extends StatefulWidget {
   final String categoria;
   const RecetasPage({required this.categoria});
@@ -44,34 +46,38 @@ class _RecetasPageState extends State<RecetasPage> {
                       Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          Text('Categoria: ${receta['categoria']}'),
+                          Text('Categoria: ', style: TextStyle(fontWeight: FontWeight.bold),),
+                          Text('${receta['categoria']}')
                           
                         ],
                       ),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          Text('Porciones: ${receta['porciones']} Personas'),
+                          Text('Porciones:', style: TextStyle(fontWeight: FontWeight.bold),),
+                          Text(' ${receta['porciones']} Personas')
                           
                         ],
                       ),
-                      Divider(),
-                      Row(children: [Text('Preparación:', style: TextStyle(fontWeight: FontWeight.bold),)],),
                       Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                        Flexible(
-                          child: Text('${receta['instrucciones']} ', overflow: TextOverflow.fade,)
-
-                        ) ]),
+                          Text('Fecha:'),
+                          
+                        ],
+                      ),
+                      
                       Container(
+                        padding: EdgeInsets.all(10),
                         child: ElevatedButton(
                           onPressed: (){
-
+                            mostrarReceta(context, receta);
                           },
                           child:Text('Ver Receta')),
                       )                     
                     ],
                   ),
+                  onLongPress:() {confirmarBorrar(context, receta, receta.id);}
                 );
               },);
             }
@@ -86,4 +92,94 @@ class _RecetasPageState extends State<RecetasPage> {
       }),
     );
   }
+
+  void mostrarReceta(BuildContext context, receta){
+    showBottomSheet(
+      context: context,
+      builder: (context){
+        return SizedBox(
+          height: 350,
+          child: Container(
+            decoration: BoxDecoration(
+              color: Color.fromARGB(255, 243, 184, 204),
+              border: Border.all(color:Colors.pink, width: 2),
+              borderRadius: BorderRadius.only(
+                topLeft: Radius.circular(10),
+                topRight: Radius.circular(10)
+              )
+          ),
+        width: double.infinity,
+        child: Container(
+          padding: EdgeInsets.all(20),
+          child: Column(
+            
+            children: [
+              Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  Container(
+                    child: OutlinedButton(
+                      child: Icon(Icons.close),
+                      onPressed: () => Navigator.pop(context),
+                      style: OutlinedButton.styleFrom(
+                        side: BorderSide.none,
+                      ),
+                      ),
+                  ),
+                ],
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Flexible(child: Text('${receta['nombre']}', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20), overflow: TextOverflow.fade,))
+                  ],
+                ),
+              Divider(color: Colors.black,),
+              Row(
+                children: [
+                  Text('Preparación:', style: TextStyle(fontWeight: FontWeight.bold),)
+                  ],
+                ),
+              Row(
+                children: [
+                  Flexible(child: Text('${receta['instrucciones']}', overflow: TextOverflow.fade,))
+                ],
+                )
+            ],
+          ),
+        ) ,
+        )
+        
+        );
+      }
+      );
+  }
+  
+  void confirmarBorrar(BuildContext context, receta, recetaid){
+    showDialog(
+      context: context,
+      builder: (BuildContext context){
+        return AlertDialog(
+          title: Text('Eliminar receta'),
+          content: Text('¿Estás seguro que deseas eliminar ${receta['nombre']}?'),
+          actions: [
+            TextButton(
+              child: Text('Cancelar'),
+              onPressed: (){
+                Navigator.of(context).pop();
+              } ),
+            TextButton(
+              child: Text('Eliminar'),
+              onPressed: (){
+                FirestoreService().recetaBorrar(recetaid);
+                Navigator.of(context).pop();
+              })
+          ],
+        );
+      }
+      );
+  }
+
+
+
 }
