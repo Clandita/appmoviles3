@@ -1,7 +1,10 @@
+import 'package:appmoviles3/main.dart';
 import 'package:appmoviles3/pages/recetas.dart';
 import 'package:appmoviles3/services/firestore_service.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 import 'package:intl/intl.dart';
 
 class HomePage extends StatefulWidget {
@@ -14,13 +17,69 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   final formatofecha=DateFormat('dd-MM-yyyy ');
   final formatohora=DateFormat('HH:mm');
+  void _signOut() async {
+    try {
+      await FirebaseAuth.instance.signOut();
+      await GoogleSignIn().signOut();
+
+      Navigator.pushAndRemoveUntil(
+        context,
+        MaterialPageRoute(builder: (context) => MyHomePage()),
+        (Route<dynamic> route) => false, 
+      );
+    } catch (e) {
+      print('Error al cerrar sesión: $e');
+    }
+  }
+  Future<void> _confirmSignOut(BuildContext context) async {
+    return showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text("Cerrar sesión"),
+          content: Text("¿Está seguro que desea cerrar sesión?"),
+          actions: [
+            TextButton(
+              child: Text("Volver"),
+              onPressed: () {
+                Navigator.of(context).pop(); 
+              },
+            ),
+            TextButton(
+              child: Text("Cerrar"),
+              onPressed: () {
+                _signOut(); 
+                Navigator.of(context).pop(); 
+              },
+            ),
+          ],
+        );
+      },
+    );
+  }
   @override
   Widget build(BuildContext context) {
+    final User? user = FirebaseAuth.instance.currentUser;
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Color(0xfffbd2cc),
         centerTitle: true,
         title: Text("Recetas de la abuela"),
+        actions: [
+          GestureDetector(
+            onTap: () {
+              _confirmSignOut(context); 
+            },
+            child: Padding(
+              padding: EdgeInsets.all(8.0),
+              child: CircleAvatar(
+                backgroundImage: NetworkImage(
+                  user?.photoURL ?? 'https://picsum.photos/200',
+                ),
+              ),
+            ),
+          ),
+        ],
       ),
       body: Column(
         children: [

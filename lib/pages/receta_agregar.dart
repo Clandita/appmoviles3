@@ -24,7 +24,9 @@ class _RecetaAgregarPageState extends State<RecetaAgregarPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(backgroundColor: Color(0xfffbd2cc),),
+      appBar: AppBar(backgroundColor: Color(0xfffbd2cc),
+      centerTitle: true,
+      title: Text("Nueva receta"),),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Form(
@@ -106,6 +108,7 @@ class _RecetaAgregarPageState extends State<RecetaAgregarPage> {
                 },
         
                 ),
+                SizedBox(height: 66.0),
               Container(
                 child: ElevatedButton(
                   onPressed: ()async{
@@ -122,13 +125,16 @@ class _RecetaAgregarPageState extends State<RecetaAgregarPage> {
                       Navigator.pop(context);
                     }
                   }, 
-                  child: Text("agregar")),
+                  child: Text("Agregar receta")),
               ),
-              SizedBox(height: 16.0),
-              Container(
+              SizedBox(height: 46.0),
+              Center(
+
                 child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+
                   children: [
-                    Text("fecha de creación: ",style: TextStyle(fontWeight: FontWeight.bold),),
+                    Text("Fecha de creación: ",style: TextStyle(fontWeight: FontWeight.bold),),
                     Text(formatofecha.format(fecha_creacion)),
                     Spacer(),
                   
