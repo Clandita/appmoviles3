@@ -82,11 +82,24 @@ class _HomePageState extends State<HomePage> {
         ],
       ),
       body: Column(
+        
         children: [
+          
+          Padding(
+            
+              padding: const EdgeInsets.all(8.0),
+              
+              child: Text(
+                "¡Hola ${user?.displayName ?? user?.email ?? 'Usuario'}!",
+                style: TextStyle(
+                  fontSize: 12,
+                ),
+              ),
+            ),
           Padding(
             padding: const EdgeInsets.all(8.0),
             child: Text(
-              "Categorías de recetas",
+              "¿Qué receta buscas?",
               style: TextStyle(
                 fontSize: 24,
                 fontWeight: FontWeight.bold,
