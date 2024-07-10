@@ -85,7 +85,7 @@ class _RecetaAgregarPageState extends State<RecetaAgregarPage> {
                   }else{
                     var categoria=snapshot.data!.docs;
                     if (categoriaseleccionada == null && categoria.isNotEmpty) {
-                        categoriaseleccionada = categoria[0]['nombre']; // Asigna la primera categoría si no hay ninguna seleccionada
+                        categoriaseleccionada = categoria[0]['nombre'];
                       }
                     return DropdownButtonFormField<String>(
                       value: categoriaseleccionada,
@@ -108,7 +108,7 @@ class _RecetaAgregarPageState extends State<RecetaAgregarPage> {
                 ),
               Container(
                 child: ElevatedButton(
-                  onPressed: (){
+                  onPressed: ()async{
                     if(formKey.currentState!.validate()){
                       FirestoreService().RecetaAgregar(
                         nombreCtrl.text.trim(),
@@ -117,7 +117,8 @@ class _RecetaAgregarPageState extends State<RecetaAgregarPage> {
                         this.categoria,
                         this.fecha_creacion,
                         'https://cdn-icons-png.flaticon.com/512/2088/2088090.png');
-                      
+                        
+                      await FirestoreService().actualizarUltimaModificacionCategoria(this.categoria);
                       Navigator.pop(context);
                     }
                   }, 

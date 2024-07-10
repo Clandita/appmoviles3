@@ -2,6 +2,7 @@ import 'package:appmoviles3/pages/recetas.dart';
 import 'package:appmoviles3/services/firestore_service.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -11,6 +12,8 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+  final formatofecha=DateFormat('dd-MM-yyyy ');
+  final formatohora=DateFormat('HH:mm');
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -44,6 +47,7 @@ class _HomePageState extends State<HomePage> {
                     itemCount: snapshot.data!.docs.length,
                     itemBuilder: (context, index) {
                       var categoria = snapshot.data!.docs[index];
+                    
                       return ListTile(
                         title: Center(
                           child: Text(
@@ -65,16 +69,22 @@ class _HomePageState extends State<HomePage> {
                             Row(
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
-                                Text('Calorias promedio: ${categoria['calorias']}'),
+                                Text('Calorias promedio: ',style: TextStyle(fontWeight: FontWeight.bold),),
+                                Text(' ${categoria['calorias']}'),
                               ],
                             ),
                             Row(
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
                                 Text(
-                                  'Última modificación:', //${categoria['ultima modificacion']}'),
-                                ),
+                                  'Última modificación:',style: TextStyle(fontWeight: FontWeight.bold),),
+                                  Text(
+                                  formatofecha.format(categoria['ultima modificacion'].toDate())),
+                                  Text(
+                                  'a las: '+formatohora.format(categoria['ultima modificacion'].toDate())+'hrs'),
+                                
                               ],
+                              
                             ),
                             Container(
                               child: ElevatedButton(

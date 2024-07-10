@@ -62,6 +62,14 @@ class _RecetasPageState extends State<RecetasPage> {
                           
                         ],
                       ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Text('Fecha creación:', style: TextStyle(fontWeight: FontWeight.bold),),
+                          Text(formatofecha.format(receta['fecha creacion'].toDate()))
+                          
+                        ],
+                      ),
                       Container(
                         padding: EdgeInsets.all(10),
                         child: ElevatedButton(

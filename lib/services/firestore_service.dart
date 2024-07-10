@@ -1,5 +1,6 @@
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:intl/intl.dart';
 
 class FirestoreService{
   /////////
@@ -21,9 +22,10 @@ class FirestoreService{
       'porciones':porciones,
       'instrucciones':instrucciones,
       'categoria':categoria,
-      'fecha_creacion':fecha_creacion,
+      'fecha creacion':fecha_creacion,
       'image':image
     });
+  
 
   }
 
@@ -34,4 +36,19 @@ class FirestoreService{
   Future<void>recetaBorrar(String docId) async {
     await FirebaseFirestore.instance.collection('recetas').doc(docId).delete();
   }
+  Future<void> actualizarUltimaModificacionCategoria(String categoria) async {
+  DateTime fechaActual = DateTime.now();
+
+  await FirebaseFirestore.instance
+      .collection('categoria')
+      .where('nombre', isEqualTo: categoria)
+      .get()
+      .then((QuerySnapshot querySnapshot) {
+    querySnapshot.docs.forEach((doc) async {
+      await doc.reference.update({
+        'ultima modificacion': fechaActual,
+      });
+    });
+  });
+}
 }
